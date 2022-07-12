@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Octokit } from "octokit";
-import { Store, setRepos } from "../context/store";
-import { SimpleGrid, Skeleton, Box, Text, Heading, Link, Spinner } from '@chakra-ui/react';
+import { Store, setRepos, setReposToNull } from "../context/store";
+import { SimpleGrid, Skeleton, Box, Text, Heading, Link, Spinner, useToast } from '@chakra-ui/react';
 import ReactPaginate from 'react-paginate';
-import Head from 'next/head';
 
 const octokit = new Octokit({ auth: `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` });
 
@@ -12,6 +11,7 @@ const UserRepos = () => {
     const [reloading, setReloading] = useState(false);
     const [pageCount, setPageCount] = useState(Math.ceil(state.profileInfo.public_repos / 6));
     const [currentPage, setCurrentPage] = useState(1);
+    const toast = useToast()
 
     const handlePageClick = (event) => {
         setCurrentPage(event.selected + 1)
@@ -23,10 +23,22 @@ const UserRepos = () => {
             const result = await octokit.request(`GET /users/${state.profileInfo.login}/repos?sort=updated&per_page=6&page=${currentPage}`, {
                 username: state.profileInfo.login,
             })
-            setRepos(result.data, dispatch)
-            setReloading(false)
-        } catch (error) {
+            if (result.data.length === 0) {
+                setReposToNull(dispatch)
 
+            } else {
+                setRepos(result.data, dispatch)
+            }
+            setReloading(false)
+
+        } catch (error) {
+            toast({
+                title: 'error',
+                description: "invalid username or server error!",
+                status: 'error',
+                duration: 1000,
+                isClosable: true,
+            })
         }
     }
 
@@ -34,13 +46,13 @@ const UserRepos = () => {
         getUserRepos()
     }, [state.profileInfo.login, currentPage])
 
-    return <React.Fragment>
+    return <Box borderWidth='1px' borderRadius='lg' p="3" height="100%">
         <Heading as='h4' size='md' pb="3">
             Repositories:
         </Heading>
 
-        {state.userRepos.length > 0 ? <div>
-            <SimpleGrid columns={2} spacing={10}>
+        {state.userRepos !== null && state.userRepos.length > 0 ? <div>
+            <SimpleGrid columns={{ base: '1', md: '2' }} spacing={10}>
                 {
                     reloading === true ? <Spinner
                         thickness='4px'
@@ -69,7 +81,7 @@ const UserRepos = () => {
                 renderOnZeroPageCount={null}
                 className="pagination"
             />
-        </div> : <SimpleGrid columns={2} spacing={10}>
+        </div> : state.userRepos == null ? <p>This user has no public repos!</p> : <SimpleGrid columns={2} spacing={10}>
             <Skeleton height='80px' />
             <Skeleton height='80px' />
             <Skeleton height='80px' />
@@ -77,6 +89,6 @@ const UserRepos = () => {
             <Skeleton height='80px' />
             <Skeleton height='80px' />
         </SimpleGrid>}
-    </React.Fragment>
+    </Box>
 }
 export default UserRepos

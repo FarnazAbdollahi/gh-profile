@@ -33,6 +33,7 @@ const HomePage = () => {
           duration: 1000,
           isClosable: true,
         })
+
       }
     }
     else {

@@ -25,12 +25,16 @@ const Profile = () => {
         setInfo(result.data, dispatch)
       } catch (error) {
         toast({
-          title: 'خطا',
-          description: "نام کاربری مورد نظر معتبر نیست",
+          title: 'error',
+          description: "invalid username!",
           status: 'error',
-          duration: 1000,
+          duration: 3000,
           isClosable: true,
         })
+        // setTimeout(()=>{
+        //   router.push(`/`)
+        // },4000)
+
       }
     }
   }
@@ -41,9 +45,9 @@ const Profile = () => {
 
   // state.profileInfo
   return state.profileInfo ?
-    <Grid templateColumns={{ base: 'repeat(0, 1fr)', md: 'repeat(5, 1fr)' }} p={10} gap={4}>
-      <GridItem  colSpan={1} > <UserInformation/></GridItem>
-      <GridItem  colSpan={4} ><UserRepos/></GridItem>
+    <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(5, 1fr)' }} p={3} gap={2}>
+      <GridItem colSpan={{ base: '1', md: '2' }} ><UserInformation/></GridItem>
+      <GridItem colSpan={{ base: '4', md: '3' }} ><UserRepos/></GridItem>
     </Grid>
     : null
 }
