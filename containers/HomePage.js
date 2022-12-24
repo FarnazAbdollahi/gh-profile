@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { Button, Input, useToast, Box, Flex, Text } from '@chakra-ui/react'
 import { setInfo ,Store } from '../context/store';
 
-const octokit = new Octokit({ auth: `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` });
+const octokit = new Octokit({ auth: `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` });
 
 
 
@@ -14,7 +14,6 @@ const HomePage = () => {
   const toast = useToast()
   const { dispatch } = useContext(Store);
   const [username, setUsername] = useState("")
-
 
   const handleClick = async (value) => {
     if (value != "") {
@@ -50,7 +49,7 @@ const HomePage = () => {
   return (
     <Flex  align="center" justify="center" minHeight="99vh">
       <Box margin="auto" w={256} h="150px" display="flex" alignItems="center" justifyContent="space-between" flexDirection="column" >
-        <Text className={styles.label}>github username</Text>
+        <Text className={styles.label}>enter your github username to check if it exists!</Text>
         <Input textAlign="left" type="text" id="username" name="username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <Button colorScheme='blue' onClick={() => handleClick(username)} type="button">confirm</Button>
       </Box>

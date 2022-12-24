@@ -8,7 +8,7 @@ import { Grid, GridItem, useToast} from '@chakra-ui/react';
 import UserInformation from '../../containers/UserInformation';
 import UserRepos from '../../containers/UserRepos';
 
-const octokit = new Octokit({ auth: `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` });
+const octokit = new Octokit({ auth: `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` });
 
 const Profile = () => {
   const router = useRouter()
@@ -39,8 +39,10 @@ const Profile = () => {
     }
   }
   useEffect(() => {
-    if (username) checkUsername()
-  }, [username])
+    if (username) {
+       checkUsername()
+    }
+  }, [username, checkUsername])
 
 
   // state.profileInfo

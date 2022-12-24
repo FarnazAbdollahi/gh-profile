@@ -4,7 +4,7 @@ import { Store, setRepos, setReposToNull } from "../context/store";
 import { SimpleGrid, Skeleton, Box, Text, Heading, Link, Spinner, useToast } from '@chakra-ui/react';
 import ReactPaginate from 'react-paginate';
 
-const octokit = new Octokit({ auth: `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` });
+const octokit = new Octokit({ auth: `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` });
 
 const UserRepos = () => {
     const { state, dispatch } = useContext(Store);
